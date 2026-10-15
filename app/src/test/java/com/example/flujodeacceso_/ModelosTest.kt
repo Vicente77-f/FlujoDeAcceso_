@@ -10,7 +10,7 @@ import org.junit.Test
 
 class ModelosTest {
 
-//-------------------------ResumenVentas y MuestraTransito--------------------------//
+//-------------------------Acceso y ConteoAcceso--------------------------//
 
 
     @Test
