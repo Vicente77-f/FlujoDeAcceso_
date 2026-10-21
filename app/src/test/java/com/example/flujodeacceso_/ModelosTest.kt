@@ -3,66 +3,74 @@ package com.example.flujodeacceso_
 import com.example.flujodeacceso_.model.Acceso
 import com.example.flujodeacceso_.model.ConteoAcceso
 import com.example.flujodeacceso_.model.ResumenVentas
-import com.example.flujodeacceso_.model.MuestraTransito
+import com.example.flujodeacceso_.model.TipoTurno
+import com.example.flujodeacceso_.model.Turno
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ModelosTest {
 
-//-------------------------Acceso y ConteoAcceso--------------------------//
-
-
+    // ---------- Acceso ----------
     @Test
     fun existenExactamenteCuatroAccesos() {
         assertEquals(4, Acceso.entries.size)
     }
 
+    // ---------- ConteoAcceso ----------
     @Test
-    fun conteoSinSalidasSeRepresentaConNull() {
+    fun totalIngresosSumaLasCuatroCategoriasSinContarTransito() {
         val conteo = ConteoAcceso(
-            acceso = Acceso.A1,
-            fecha = "2026-10-13",
-            hora = 10,
-            ingresos = 120,
-            salidas = null
+            turnoId = 1, acceso = Acceso.A1, fecha = "2026-10-13", hora = 10,
+            hombres = 30, mujeres = 36, menores = 10, sinClasificar = 2, transito = 14
         )
-        assertNull(conteo.salidas)
+        assertEquals(78, conteo.totalIngresos)
     }
 
     @Test
-    fun copyCreaUnConteoNuevoSinModificarElOrigen() {
-        val original = ConteoAcceso(Acceso.A2, "2026-10-13", 12, 80, 75)
-        val corregido = original.copy(ingresos = 85)
-        assertEquals(80, original.ingresos)
-        assertEquals(85, corregido.ingresos)
+    fun conteoNuevoPartedeCero() {
+        val conteo = ConteoAcceso(turnoId = 1, acceso = Acceso.A2, fecha = "2026-10-13", hora = 11)
+        assertEquals(0, conteo.totalIngresos)
     }
 
+    @Test
+    fun copyCreaUnConteoNuevoSinModificarElOriginal() {
+        val original = ConteoAcceso(turnoId = 1, acceso = Acceso.A2, fecha = "2026-10-13", hora = 12, mujeres = 5)
+        val actualizado = original.copy(mujeres = original.mujeres + 1)
+        assertEquals(5, original.mujeres)
+        assertEquals(6, actualizado.mujeres)
+    }
 
-//-------------------------ResumenVentas y MuestraTransito--------------------------//
+    // ---------- TipoTurno ----------
+    @Test
+    fun lasQuinceHorasPertenecenSoloAlTurnoPM() {
+        assertTrue(TipoTurno.AM.incluyeHora(14))
+        assertFalse(TipoTurno.AM.incluyeHora(15))
+        assertTrue(TipoTurno.PM.incluyeHora(15))
+        assertFalse(TipoTurno.PM.incluyeHora(20))
+    }
 
+    @Test
+    fun horarioSeMuestraComoTexto() {
+        assertEquals("10:00 - 15:00", TipoTurno.AM.horario)
+    }
+
+    // ---------- Turno ----------
+    @Test
+    fun turnoSinHoraDeFinEstaAbierto() {
+        val turno = Turno(
+            usuarioId = 1, acceso = Acceso.A1, tipo = TipoTurno.AM, fecha = "2026-10-13",
+            horaInicioReal = "10:02", horaFinReal = null, fotoUri = "content://demo/foto1"
+        )
+        assertTrue(turno.estaAbierto)
+        assertFalse(turno.copy(horaFinReal = "15:00").estaAbierto)
+    }
+
+    // ---------- ResumenVentas ----------
     @Test
     fun totalTransaccionesSumaAmbosTiposDeCaja() {
-        val ventas = ResumenVentas(
-            fecha = "2026-10-13",
-            hora = 12,
-            transaccionesTradicionales = 30,
-            transaccionesAutoservicio = 20
-        )
-        assertEquals(50, ventas.totalTransacciones)
-    }
-
-    @Test
-    fun totalTransaccionesSeRecalculaDespuesDeCopy() {
         val ventas = ResumenVentas("2026-10-13", 12, 30, 20)
-        val corregidas = ventas.copy(transaccionesAutoservicio = 25)
-        assertEquals(55, corregidas.totalTransacciones)
-    }
-
-    @Test
-    fun dosMuestrasConLosMismosDatosSonIguales() {
-        val muestra1 = MuestraTransito(Acceso.A3, "2026-10-13", 18, 20, 50, 15)
-        val muestra2 = MuestraTransito(Acceso.A3, "2026-10-13", 18, 20, 50, 15)
-        assertEquals(muestra1, muestra2)
+        assertEquals(50, ventas.totalTransacciones)
     }
 }
