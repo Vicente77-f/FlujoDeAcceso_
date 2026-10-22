@@ -12,7 +12,7 @@ import com.example.flujodeacceso_.ui.screens.iniciarturno.IniciarTurnoScreen
 import com.example.flujodeacceso_.ui.screens.login.LoginScreen
 import com.example.flujodeacceso_.ui.screens.panelsupervisor.PanelSupervisorScreen
 import com.example.flujodeacceso_.ui.screens.resumenturno.ResumenTurnoScreen
-
+import com.example.flujodeacceso_.model.Rol
 @Composable
 fun AppNavGraph(
     modifier: Modifier = Modifier,
@@ -32,13 +32,13 @@ fun AppNavGraph(
     ) {
         composable(Screen.Login.route) {
             LoginScreen(
-                onIngresarComoEmpleado = {
-                    navController.navigate(Screen.IniciarTurno.route) {
-                        popUpTo(Screen.Login.route) { inclusive = true }
+                onLoginExitoso = { rol ->
+                    val destino = if (rol == Rol.SUPERVISOR) {
+                        Screen.PanelSupervisor.route
+                    } else {
+                        Screen.IniciarTurno.route
                     }
-                },
-                onIngresarComoSupervisor = {
-                    navController.navigate(Screen.PanelSupervisor.route) {
+                    navController.navigate(destino) {
                         popUpTo(Screen.Login.route) { inclusive = true }
                     }
                 }
