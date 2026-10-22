@@ -1,6 +1,5 @@
 package com.example.flujodeacceso_.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -9,50 +8,70 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+
+private val EsquemaClaro = lightColorScheme(
+    primary = VerdeAzulado,
+    onPrimary = Color.White,
+    primaryContainer = VerdeAzuladoClaro,
+    onPrimaryContainer =  VerdeAzuladoOscuro,
+    secondary = GrisVerdoso,
+    onSecondary = Color.White,
+    secondaryContainer = GrisVerdosoClaro,
+    onSecondaryContainer = VerdeAzuladoOscuro,
+    tertiary = Ambar,
+    onTertiary = Color.White,
+    tertiaryContainer = AmbarClaro,
+    onTertiaryContainer = AmbarOscuro,
+    background = FondoClaro,
+    onBackground = TextoPrincipal,
+    surface = FondoClaro,
+    onSurface = TextoPrincipal,
+    surfaceVariant = SuperficieVariante,
+    onSurfaceVariant = TextoSecundario,
+    outline = Borde,
+    error = RojoError,
+    onError = Color.White
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+private val EsquemaOscuro = darkColorScheme(
+    primary = VerdeAzuladoNoche,
+    onPrimary = VerdeAzuladoOscuro,
+    primaryContainer = VerdeAzuladoNocheContenedor,
+    onPrimaryContainer = VerdeAzuladoClaro,
+    tertiary = AmbarNoche,
+    tertiaryContainer = AmbarOscuro,
+    onTertiaryContainer = AmbarClaro,
+    background = FondoOscuro,
+    onBackground = TextoClaro,
+    surface = FondoOscuro,
+    onSurface = TextoClaro,
+    surfaceVariant = TextoSecundario,
+    onSurfaceVariant = TextoClaroSecundario,
+    outline = Borde,
+    error = RojoErrorNoche
 )
 
 @Composable
-fun FlujoDeAcceso_Theme(
+fun FlujoDeAcceso_Theme (
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamiColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+        dynamiColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        darkTheme -> EsquemaOscuro
+        else -> EsquemaClaro
     }
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography =  Typography,
         content = content
     )
 }
