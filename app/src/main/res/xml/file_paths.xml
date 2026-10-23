@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Carpeta privada de la app donde se guardan las fotos del puesto -->
+    <files-path name="fotos_puesto" path="fotos/" />
+</paths>
