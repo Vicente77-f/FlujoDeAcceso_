@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
+import com.example.flujodeacceso_.data.repository.SesionRepository
 class LoginViewModel(
     private val repositorio: UsuarioRepository = UsuarioRepository()
 ) : ViewModel() {
@@ -43,6 +43,7 @@ class LoginViewModel(
         viewModelScope.launch {
             _estado.update { it.copy(cargando = true, errorGeneral = null) }
             val resultado = repositorio.iniciarSesion(actual.correo, actual.clave)
+            resultado.getOrNull()?.let { usuario -> SesionRepository.iniciar(usuario) }
             _estado.update {
                 resultado.fold(
                     onSuccess = { usuario -> it.copy(cargando = false, usuarioIngresado = usuario) },
