@@ -1,8 +1,10 @@
 package com.example.flujodeacceso_.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.flujodeacceso_.data.local.database.AppDatabase
 import com.example.flujodeacceso_.data.repository.TurnoRepository
 import com.example.flujodeacceso_.domain.horaActual
 import com.example.flujodeacceso_.domain.horaActualTexto
@@ -19,7 +21,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ContadorViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
+class ContadorViewModel(
+    application: Application,          // El orden (Application, SavedStateHandle) es obligatorio
+    savedStateHandle: SavedStateHandle
+) : AndroidViewModel(application) {
+
+    // Debe declararse ANTES del bloque init, porque init ya lo usa
+    private val turnoRepository = TurnoRepository(AppDatabase.obtener(application).turnoDao())
 
     // El turnoId llega desde la ruta "contador/{turnoId}"
     private val turnoId: Long = checkNotNull(savedStateHandle.get<Long>(ARG_TURNO_ID)) {
@@ -41,13 +49,13 @@ class ContadorViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
     private fun cargarTurno() {
         viewModelScope.launch {
-            val encontrado = TurnoRepository.obtenerTurno(turnoId)
+            val encontrado = turnoRepository.obtenerTurno(turnoId)
             if (encontrado == null) {
                 _estado.update { it.copy(cargando = false, error = "No se encontró el turno") }
                 return@launch
             }
             turno = encontrado
-            conteos = TurnoRepository.conteosDeTurno(turnoId)
+            conteos = turnoRepository.conteosDeTurno(turnoId)
             publicarEstado(mensaje = null)
         }
     }
@@ -70,7 +78,7 @@ class ContadorViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
     fun finalizarTurno() {
         viewModelScope.launch {
-            TurnoRepository.cerrarTurno(turnoId, horaActualTexto())
+            turnoRepository.cerrarTurno(turnoId, horaActualTexto())
             _estado.update { it.copy(turnoFinalizado = true) }
         }
     }
@@ -101,7 +109,7 @@ class ContadorViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
         }
 
         conteos = conteos.filter { it.hora != hora } + nuevo
-        viewModelScope.launch { TurnoRepository.guardarConteo(nuevo) }
+        viewModelScope.launch { turnoRepository.guardarConteo(nuevo) }
         return true
     }
 

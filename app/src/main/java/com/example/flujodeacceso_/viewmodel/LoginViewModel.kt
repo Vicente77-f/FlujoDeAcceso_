@@ -1,7 +1,10 @@
 package com.example.flujodeacceso_.viewmodel
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.flujodeacceso_.data.local.database.AppDatabase
+import com.example.flujodeacceso_.data.repository.SesionRepository
 import com.example.flujodeacceso_.data.repository.UsuarioRepository
 import com.example.flujodeacceso_.domain.validation.validarClave
 import com.example.flujodeacceso_.domain.validation.validarCorreo
@@ -10,10 +13,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import com.example.flujodeacceso_.data.repository.SesionRepository
-class LoginViewModel(
-    private val repositorio: UsuarioRepository = UsuarioRepository()
-) : ViewModel() {
+
+class LoginViewModel(application: Application) : AndroidViewModel(application) {
+
+    // Igual que el profesor: la base se obtiene con el Application.
+    // Diferencia: el ViewModel habla con un Repository, no directo con el DAO.
+    private val repositorio = UsuarioRepository(AppDatabase.obtener(application).usuarioDao())
 
     private val _estado = MutableStateFlow(LoginUiState())
     val estado: StateFlow<LoginUiState> = _estado
@@ -39,7 +44,7 @@ class LoginViewModel(
             return
         }
 
-        // 2) Verificación de credenciales (asíncrona)
+        // 2) Verificación de credenciales contra la tabla usuarios (asíncrona)
         viewModelScope.launch {
             _estado.update { it.copy(cargando = true, errorGeneral = null) }
             val resultado = repositorio.iniciarSesion(actual.correo, actual.clave)

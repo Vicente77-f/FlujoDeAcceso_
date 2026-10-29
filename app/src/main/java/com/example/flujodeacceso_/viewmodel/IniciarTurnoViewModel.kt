@@ -1,7 +1,9 @@
 package com.example.flujodeacceso_.viewmodel
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.flujodeacceso_.data.local.database.AppDatabase
 import com.example.flujodeacceso_.data.repository.SesionRepository
 import com.example.flujodeacceso_.data.repository.TurnoRepository
 import com.example.flujodeacceso_.domain.fechaHoy
@@ -19,7 +21,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class IniciarTurnoViewModel : ViewModel() {
+class IniciarTurnoViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val turnoRepository = TurnoRepository(AppDatabase.obtener(application).turnoDao())
 
     private val _estado = MutableStateFlow(
         IniciarTurnoUiState(
@@ -65,10 +69,10 @@ class IniciarTurnoViewModel : ViewModel() {
             return
         }
 
-        // 3) Guardar el turno
+        // 3) Guardar el turno en la tabla turnos (INSERT)
         viewModelScope.launch {
             _estado.update { it.copy(guardando = true, errorGeneral = null) }
-            val id = TurnoRepository.crearTurno(
+            val id = turnoRepository.crearTurno(
                 Turno(
                     usuarioId = usuario.id,
                     acceso = acceso,
