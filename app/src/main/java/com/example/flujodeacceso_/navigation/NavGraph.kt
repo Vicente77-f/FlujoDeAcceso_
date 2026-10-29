@@ -15,6 +15,11 @@ import com.example.flujodeacceso_.ui.screens.iniciarturno.IniciarTurnoScreen
 import com.example.flujodeacceso_.ui.screens.login.LoginScreen
 import com.example.flujodeacceso_.ui.screens.panelsupervisor.PanelSupervisorScreen
 import com.example.flujodeacceso_.ui.screens.resumenturno.ResumenTurnoScreen
+import com.example.flujodeacceso_.ui.components.entradaAlVolver
+import com.example.flujodeacceso_.ui.components.entradaNavegacion
+import com.example.flujodeacceso_.ui.components.salidaAlVolver
+import com.example.flujodeacceso_.ui.components.salidaNavegacion
+
 
 @Composable
 fun AppNavGraph(
@@ -35,7 +40,11 @@ fun AppNavGraph(
     NavHost(
         navController = navController,
         startDestination = Screen.Login.route,
-        modifier = modifier
+        modifier = modifier,
+        enterTransition = entradaNavegacion,
+        exitTransition = salidaNavegacion,
+        popEnterTransition = entradaAlVolver,
+        popExitTransition = salidaAlVolver
     ) {
         composable(Screen.Login.route) {
             LoginScreen(
