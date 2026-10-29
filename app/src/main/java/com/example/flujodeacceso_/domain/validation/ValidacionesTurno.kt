@@ -4,7 +4,7 @@ import com.example.flujodeacceso_.model.Acceso
 import com.example.flujodeacceso_.model.TipoTurno
 
 fun validarTipoTurno(tipo: TipoTurno?): String? =
-        if (tipo == null) "Seleciona el turno" else null
+        if (tipo == null) "Selecciona el turno" else null
 
 fun validarAcceso(acceso: Acceso?): String? =
     if (acceso ==null) "Selecciona el acceso asignado" else null
