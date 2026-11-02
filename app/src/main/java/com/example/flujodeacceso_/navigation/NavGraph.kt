@@ -82,8 +82,7 @@ fun AppNavGraph(
         }
 
         composable(Screen.ResumenTurno.route, arguments = argumentoTurno) {
-            ResumenTurnoScreen(onCerrarTurno = irALogin)
-        }
+            ResumenTurnoScreen(onSalir = irALogin)        }
 
         composable(Screen.PanelSupervisor.route) {
             PanelSupervisorScreen(onCerrarSesion = irALogin)
