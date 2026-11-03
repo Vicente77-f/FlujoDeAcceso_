@@ -57,11 +57,11 @@ Kotlin 2.0.21 · Jetpack Compose (BOM 2024.09.00) · Material Design 3 · Naviga
 
 ## Usuarios de demostración
 
-| Rol | Correo | Contraseña |
-|---|---|---|
-| Empleado | camila.r@tienda-demo.cl | demo1234 |
-| Empleado | diego.m@tienda-demo.cl | demo1234 |
-| Supervisor | supervisor@tienda-demo.cl | super1234 |
+| Rol | Correo             | Contraseña |
+|---|--------------------|---|
+| Empleado | camila.r@duoc.cl   | demo1234 |
+| Empleado | diego.m@duoc.cl    | demo1234 |
+| Supervisor | supervisor@duoc.cl | super1234 |
 
 También existen 6 empleados ficticios más (Sofía L., Tomás V., Javiera P., Benjamín O., Martina C. e Ignacio S.), todos con la contraseña `demo1234`, que aparecen en los turnos de demostración.
 

@@ -19,15 +19,15 @@ const val HASH_DEMO = "0ead2060b65992dca4769af601a1b3a35ef38cfad2c2c465bb160ea76
 const val HASH_SUPERVISOR = "e80b9b5a428eaa804690ad5096312c0aa713f6253da6aa23784b1b2867e37472"
 
 val usuariosSemilla = listOf(
-    UsuarioEntity(1, "Camila R.", "camila.r@tienda-demo.cl", Rol.EMPLEADO, HASH_DEMO),
-    UsuarioEntity(2, "Diego M.", "diego.m@tienda-demo.cl", Rol.EMPLEADO, HASH_DEMO),
-    UsuarioEntity(3, "Supervisora Demo", "supervisor@tienda-demo.cl", Rol.SUPERVISOR, HASH_SUPERVISOR),
-    UsuarioEntity(4, "Sofía L.", "sofia.l@tienda-demo.cl", Rol.EMPLEADO, HASH_DEMO),
-    UsuarioEntity(5, "Tomás V.", "tomas.v@tienda-demo.cl", Rol.EMPLEADO, HASH_DEMO),
-    UsuarioEntity(6, "Javiera P.", "javiera.p@tienda-demo.cl", Rol.EMPLEADO, HASH_DEMO),
-    UsuarioEntity(7, "Benjamín O.", "benjamin.o@tienda-demo.cl", Rol.EMPLEADO, HASH_DEMO),
-    UsuarioEntity(8, "Martina C.", "martina.c@tienda-demo.cl", Rol.EMPLEADO, HASH_DEMO),
-    UsuarioEntity(9, "Ignacio S.", "ignacio.s@tienda-demo.cl", Rol.EMPLEADO, HASH_DEMO)
+    UsuarioEntity(1, "Camila R.", "camila.r@duoc.cl", Rol.EMPLEADO, HASH_DEMO),
+    UsuarioEntity(2, "Diego M.", "diego.m@duoc.cl", Rol.EMPLEADO, HASH_DEMO),
+    UsuarioEntity(3, "Supervisora Demo", "supervisor@duoc.cl", Rol.SUPERVISOR, HASH_SUPERVISOR),
+    UsuarioEntity(4, "Sofía L.", "sofia.l@duoc.cl", Rol.EMPLEADO, HASH_DEMO),
+    UsuarioEntity(5, "Tomás V.", "tomas.v@duoc.cl", Rol.EMPLEADO, HASH_DEMO),
+    UsuarioEntity(6, "Javiera P.", "javiera.p@duoc.cl", Rol.EMPLEADO, HASH_DEMO),
+    UsuarioEntity(7, "Benjamín O.", "benjamin.o@duoc.cl", Rol.EMPLEADO, HASH_DEMO),
+    UsuarioEntity(8, "Martina C.", "martina.c@duoc.cl", Rol.EMPLEADO, HASH_DEMO),
+    UsuarioEntity(9, "Ignacio S.", "ignacio.s@duoc.cl", Rol.EMPLEADO, HASH_DEMO)
 )
 
 /** Totales de cada turno del 13-oct. El tránsito está INCLUIDO en los ingresos. */

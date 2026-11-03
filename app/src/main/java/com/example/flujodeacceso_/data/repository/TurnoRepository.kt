@@ -23,7 +23,7 @@ class TurnoRepository(private val dao: TurnoDao) {
     /** Guarda el conteo de una hora: si ya existía para ese turno y hora, lo reemplaza. */
     suspend fun guardarConteo(conteo: ConteoAcceso) = dao.guardarConteo(conteo.aEntidad())
 
-    // ---------- Para el resumen, el panel y la reapertura de la app ----------
+    // ---------- Consultas para el resumen y el panel ----------
     suspend fun turnoAbiertoDe(usuarioId: Long): Turno? = dao.turnoAbiertoDe(usuarioId)?.aModelo()
 
     suspend fun marcarExportado(id: Long) {
