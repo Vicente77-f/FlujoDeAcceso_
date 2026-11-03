@@ -33,8 +33,8 @@ abstract class AppDatabase : RoomDatabase() {
                     "flujo_acceso.db"
                 )
                     .addCallback(object : RoomDatabase.Callback() {
-                        // Igual que el profesor: onOpen corre cada vez que se abre la base,
-                        // así la semilla también vuelve después de una migración destructiva.
+                        // onOpen corre cada vez que se abre la base: así los datos demo
+                        // también vuelven después de una migración destructiva.
                         override fun onOpen(db: SupportSQLiteDatabase) {
                             super.onOpen(db)
                             sembrarDatos(db)

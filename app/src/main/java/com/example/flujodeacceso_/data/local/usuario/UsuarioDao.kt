@@ -10,7 +10,7 @@ interface UsuarioDao {
     @Query("SELECT * FROM usuarios WHERE correo = :correo COLLATE NOCASE LIMIT 1")
     suspend fun buscarPorCorreo(correo: String): UsuarioEntity?
 
-    /** Se usará en la Ronda 2 para recuperar la sesión guardada en DataStore. */
+    /** Busca un usuario por su id (el resumen y el panel lo usan para mostrar quién hizo el turno). */
     @Query("SELECT * FROM usuarios WHERE id = :id")
     suspend fun buscarPorId(id: Long): UsuarioEntity?
 }

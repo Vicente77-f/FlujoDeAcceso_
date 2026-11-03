@@ -16,8 +16,7 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
-    // Igual que el profesor: la base se obtiene con el Application.
-    // Diferencia: el ViewModel habla con un Repository, no directo con el DAO.
+    // La base se obtiene con el Application; el ViewModel usa el Repository, no el DAO directo.
     private val repositorio = UsuarioRepository(AppDatabase.obtener(application).usuarioDao())
 
     private val _estado = MutableStateFlow(LoginUiState())
