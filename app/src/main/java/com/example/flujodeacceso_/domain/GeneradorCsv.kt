@@ -24,4 +24,4 @@ fun generarCsv(turno: Turno, conteos: List<ConteoAcceso>): String = buildString 
 
 /** Nombre sugerido para el archivo. Ej.: flujo_2026-10-13_AM_A1.csv */
 fun nombreArchivoCsv(turno: Turno): String =
-    "flujo_${turno  .fecha}_${turno.tipo.name}_${turno.acceso.name}.csv"
+    "flujo_${turno.fecha}_${turno.tipo.name}_${turno.acceso.name}.csv"

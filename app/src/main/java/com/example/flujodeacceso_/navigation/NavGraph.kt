@@ -10,16 +10,15 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.flujodeacceso_.data.repository.SesionRepository
 import com.example.flujodeacceso_.model.Rol
+import com.example.flujodeacceso_.ui.components.entradaAlVolver
+import com.example.flujodeacceso_.ui.components.entradaNavegacion
+import com.example.flujodeacceso_.ui.components.salidaAlVolver
+import com.example.flujodeacceso_.ui.components.salidaNavegacion
 import com.example.flujodeacceso_.ui.screens.contador.ContadorScreen
 import com.example.flujodeacceso_.ui.screens.iniciarturno.IniciarTurnoScreen
 import com.example.flujodeacceso_.ui.screens.login.LoginScreen
 import com.example.flujodeacceso_.ui.screens.panelsupervisor.PanelSupervisorScreen
 import com.example.flujodeacceso_.ui.screens.resumenturno.ResumenTurnoScreen
-import com.example.flujodeacceso_.ui.components.entradaAlVolver
-import com.example.flujodeacceso_.ui.components.entradaNavegacion
-import com.example.flujodeacceso_.ui.components.salidaAlVolver
-import com.example.flujodeacceso_.ui.components.salidaNavegacion
-
 
 @Composable
 fun AppNavGraph(
@@ -82,10 +81,26 @@ fun AppNavGraph(
         }
 
         composable(Screen.ResumenTurno.route, arguments = argumentoTurno) {
-            ResumenTurnoScreen(onSalir = irALogin)        }
+            // La misma pantalla sirve para el empleado (al cerrar su turno) y para el supervisor
+            val desdePanel = navController.previousBackStackEntry?.destination?.route ==
+                    Screen.PanelSupervisor.route
+            if (desdePanel) {
+                ResumenTurnoScreen(
+                    onSalir = { navController.popBackStack() },
+                    textoSalir = "Volver al panel"
+                )
+            } else {
+                ResumenTurnoScreen(onSalir = irALogin)
+            }
+        }
 
         composable(Screen.PanelSupervisor.route) {
-            PanelSupervisorScreen(onCerrarSesion = irALogin)
+            PanelSupervisorScreen(
+                onAbrirTurno = { turnoId ->
+                    navController.navigate(Screen.ResumenTurno.crearRuta(turnoId))
+                },
+                onCerrarSesion = irALogin
+            )
         }
     }
 }
