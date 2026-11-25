@@ -13,7 +13,7 @@ import com.example.flujodeacceso_.data.local.usuario.UsuarioEntity
 
 @Database(
     entities = [UsuarioEntity::class, TurnoEntity::class, ConteoAccesoEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

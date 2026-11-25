@@ -93,6 +93,8 @@ fun sembrarDatos(db: SupportSQLiteDatabase) {
             put("acceso", t.acceso.name); put("tipo", t.tipo.name); put("fecha", t.fecha)
             put("horaInicioReal", t.horaInicioReal); put("horaFinReal", t.horaFinReal)
             put("fotoUri", t.fotoUri); put("exportado", if (t.exportado) 1 else 0)
+            put("fotoUri", t.fotoUri); put("exportado", if (t.exportado) 1 else 0)
+            put("idRemoto", t.id); put("sincronizado", 1); put("corregido", 0)
         })
     }
     conteosSemilla().forEach { c ->
@@ -100,6 +102,8 @@ fun sembrarDatos(db: SupportSQLiteDatabase) {
             put("turnoId", c.turnoId); put("acceso", c.acceso.name); put("fecha", c.fecha)
             put("hora", c.hora); put("hombres", c.hombres); put("mujeres", c.mujeres)
             put("menores", c.menores); put("sinClasificar", c.sinClasificar); put("transito", c.transito)
+            put("menores", c.menores); put("sinClasificar", c.sinClasificar); put("transito", c.transito)
+            put("sincronizado", 1)
         })
     }
 }
