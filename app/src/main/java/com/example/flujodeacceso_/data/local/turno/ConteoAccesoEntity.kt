@@ -28,7 +28,9 @@ data class ConteoAccesoEntity(
     val mujeres: Int,
     val menores: Int,
     val sinClasificar: Int,
-    val transito: Int
+    val transito: Int,
+    val sincronizado: Boolean = false   // true = este valor ya está en turnoMS
+
 )
 
 fun ConteoAccesoEntity.aModelo(): ConteoAcceso = ConteoAcceso(
@@ -42,3 +44,4 @@ fun ConteoAcceso.aEntidad(): ConteoAccesoEntity = ConteoAccesoEntity(
     hombres = hombres, mujeres = mujeres, menores = menores,
     sinClasificar = sinClasificar, transito = transito
 )
+

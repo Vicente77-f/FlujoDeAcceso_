@@ -55,16 +55,21 @@ class PanelSupervisorViewModel(application: Application) : AndroidViewModel(appl
             construirEstado(dia, turnos, conteos, eliminar, aviso)
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), PanelSupervisorUiState())
 
+    init {
+        actualizarDesdeServidor(fecha.value)
+    }
     // ---------- Acciones de la pantalla ----------
 
     fun verDemo() {
         fecha.value = FECHA_DEMO
         mensaje.value = null
+        actualizarDesdeServidor(FECHA_DEMO)
     }
 
     fun verHoy() {
         fecha.value = hoy
         mensaje.value = null
+        actualizarDesdeServidor(hoy)
     }
 
     fun pedirEliminar(turno: Turno) {
@@ -80,12 +85,25 @@ class PanelSupervisorViewModel(application: Application) : AndroidViewModel(appl
     }
 
     /** DELETE en Room: el CASCADE borra también los conteos del turno. */
+    /** Borra en turnoMS y en Room (el CASCADE borra los conteos). Sin conexión, avisa y no borra. */
     fun confirmarEliminar() {
         val turno = turnoPorEliminar.value ?: return
         turnoPorEliminar.value = null
         viewModelScope.launch {
-            turnoRepository.eliminarTurno(turno)
-            mensaje.value = "Turno ${turno.tipo.name} · ${turno.acceso.name} eliminado"
+            mensaje.value = turnoRepository.eliminarTurno(turno).fold(
+                onSuccess = { "Turno ${turno.tipo.name} · ${turno.acceso.name} eliminado" },
+                onFailure = { it.message }
+            )
+        }
+    }
+
+    /** Sube lo pendiente y descarga el día desde turnoMS. Room actualiza la pantalla solo (Flow). */
+    private fun actualizarDesdeServidor(dia: String) {
+        viewModelScope.launch {
+            turnoRepository.sincronizarPendientes()
+            if (!turnoRepository.descargarDia(dia)) {
+                mensaje.value = "Sin conexión con el servidor: se muestran los datos guardados en el teléfono"
+            }
         }
     }
 

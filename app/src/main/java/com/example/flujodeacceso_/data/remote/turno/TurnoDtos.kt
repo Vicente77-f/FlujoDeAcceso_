@@ -38,7 +38,7 @@ data class ConteoDto(
 fun TurnoDto.aTurno(): Turno = Turno(
     id = id, usuarioId = usuarioId, acceso = acceso, tipo = tipo, fecha = fecha,
     horaInicioReal = horaInicioReal, horaFinReal = horaFinReal,
-    fotoUri = fotoUri ?: "", exportado = exportado
+    fotoUri = fotoUri ?: "", exportado = exportado, corregido = corregido
 )
 
 fun Turno.aRequest(): TurnoRequestDto =

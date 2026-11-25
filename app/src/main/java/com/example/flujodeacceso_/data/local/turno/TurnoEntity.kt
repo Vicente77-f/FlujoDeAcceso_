@@ -16,19 +16,22 @@ data class TurnoEntity(
     val horaInicioReal: String,
     val horaFinReal: String?,       // NULL en la tabla = turno abierto
     val fotoUri: String,
-    val exportado: Boolean = false  // Room lo guarda como 0 o 1
+    val exportado: Boolean = false, // Room lo guarda como 0 o 1
+    val idRemoto: Long? = null,     // id del turno en turnoMS; NULL = aún no llega al servidor
+    val sincronizado: Boolean = false, // true = el servidor tiene la última versión
+    val corregido: Boolean = false
 )
 
 /** Fila de la tabla → modelo de la app. */
 fun TurnoEntity.aModelo(): Turno = Turno(
     id = id, usuarioId = usuarioId, acceso = acceso, tipo = tipo, fecha = fecha,
     horaInicioReal = horaInicioReal, horaFinReal = horaFinReal,
-    fotoUri = fotoUri, exportado = exportado
+    fotoUri = fotoUri, exportado = exportado, corregido = corregido
 )
 
-/** Modelo de la app → fila de la tabla (para insertar, actualizar o eliminar). */
+/** Modelo de la app → fila nueva de la tabla (queda pendiente de sincronizar). */
 fun Turno.aEntidad(): TurnoEntity = TurnoEntity(
     id = id, usuarioId = usuarioId, acceso = acceso, tipo = tipo, fecha = fecha,
     horaInicioReal = horaInicioReal, horaFinReal = horaFinReal,
-    fotoUri = fotoUri, exportado = exportado
+    fotoUri = fotoUri, exportado = exportado, corregido = corregido
 )
