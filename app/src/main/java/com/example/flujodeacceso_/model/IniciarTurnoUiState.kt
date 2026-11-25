@@ -12,5 +12,7 @@ data class IniciarTurnoUiState(
     val errorFoto: String? = null,
     val errorGeneral: String? = null,
     val guardando: Boolean = false,
-    val turnoCreadoId: Long? = null      // distinto de null = navegar al contador
+    val turnoCreadoId: Long? = null,      // distinto de null = navegar al contador
+    val clima: Clima? = null             // null = sin datos (no se muestra)
+
 )

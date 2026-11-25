@@ -60,7 +60,7 @@ import com.example.flujodeacceso_.model.Acceso
 import com.example.flujodeacceso_.model.TipoTurno
 import com.example.flujodeacceso_.viewmodel.IniciarTurnoViewModel
 import java.io.File
-
+import androidx.compose.material.icons.filled.Cloud
 /** Crea un archivo vacío (con nombre único) en la carpeta privada "fotos". */
 private fun crearArchivoFoto(context: Context): File {
     val carpeta = File(context.filesDir, "fotos").apply { if (!exists()) mkdirs() }
@@ -132,6 +132,25 @@ fun IniciarTurnoScreen(
             }
             IconButton(onClick = onCerrarSesion) {
                 Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = "Cerrar sesión")
+            }
+        }
+        // ---------- Clima actual (Open-Meteo) ----------
+        estado.clima?.let { clima ->
+            OutlinedCard(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier.padding(12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Icon(Icons.Filled.Cloud, contentDescription = null)
+                    Column {
+                        Text("Clima en Santiago", style = MaterialTheme.typography.labelMedium)
+                        Text(
+                            "${clima.temperatura} °C · ${clima.descripcion} · ${clima.precipitacion} mm",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
             }
         }
 
