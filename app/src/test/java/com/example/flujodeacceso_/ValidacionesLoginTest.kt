@@ -2,6 +2,9 @@ package com.example.flujodeacceso_
 
 import com.example.flujodeacceso_.data.local.usuario.UsuarioDao
 import com.example.flujodeacceso_.data.local.usuario.UsuarioEntity
+import com.example.flujodeacceso_.data.remote.usuario.LoginRequestDto
+import com.example.flujodeacceso_.data.remote.usuario.UsuarioApiService
+import com.example.flujodeacceso_.data.remote.usuario.UsuarioDto
 import com.example.flujodeacceso_.data.repository.UsuarioRepository
 import com.example.flujodeacceso_.domain.seguridad.hashClave
 import com.example.flujodeacceso_.domain.validation.validarClave
@@ -13,6 +16,7 @@ import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.io.IOException
 
 class ValidacionesLoginTest {
 
@@ -44,14 +48,16 @@ class ValidacionesLoginTest {
 
     @Test
     fun loginCorrectoDevuelveUsuarioConSuRol() = runBlocking {
-        val resultado = UsuarioRepository(UsuarioDaoFalso()).iniciarSesion("supervisor@tienda-demo.cl", "super1234")
+        val resultado = UsuarioRepository(UsuarioDaoFalso(), ApiSinConexion())
+            .iniciarSesion("supervisor@tienda-demo.cl", "super1234")
         assertTrue(resultado.isSuccess)
         assertEquals(Rol.SUPERVISOR, resultado.getOrNull()?.rol)
     }
 
     @Test
     fun loginConClaveIncorrectaFalla() = runBlocking {
-        val resultado = UsuarioRepository(UsuarioDaoFalso()).iniciarSesion("camila.r@tienda-demo.cl", "otra-clave")
+        val resultado = UsuarioRepository(UsuarioDaoFalso(), ApiSinConexion())
+            .iniciarSesion("camila.r@tienda-demo.cl", "otra-clave")
         assertTrue(resultado.isFailure)
     }
 }
@@ -68,4 +74,12 @@ private class UsuarioDaoFalso : UsuarioDao {
 
     override suspend fun buscarPorId(id: Long): UsuarioEntity? =
         cuentas.find { it.id == id }
+
+    override suspend fun guardar(usuario: UsuarioEntity) {}   // Aquí no se necesita guardar
+}
+
+/** API falsa: simula que el servidor no responde, así se prueba el login con Room. */
+private class ApiSinConexion : UsuarioApiService {
+    override suspend fun login(request: LoginRequestDto): UsuarioDto = throw IOException("Sin conexión")
+    override suspend fun obtenerUsuario(id: Long): UsuarioDto = throw IOException("Sin conexión")
 }
