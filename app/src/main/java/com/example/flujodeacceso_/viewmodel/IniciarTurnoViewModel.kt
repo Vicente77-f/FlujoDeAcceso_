@@ -20,11 +20,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
+import com.example.flujodeacceso_.data.repository.ClimaRepository
 class IniciarTurnoViewModel(application: Application) : AndroidViewModel(application) {
 
     private val turnoRepository = TurnoRepository(AppDatabase.obtener(application).turnoDao())
-
+    private val climaRepository = ClimaRepository()
     private val _estado = MutableStateFlow(
         IniciarTurnoUiState(
             nombreUsuario = SesionRepository.usuarioActual.value?.nombre ?: "",
@@ -33,6 +33,15 @@ class IniciarTurnoViewModel(application: Application) : AndroidViewModel(applica
         )
     )
     val estado: StateFlow<IniciarTurnoUiState> = _estado
+
+    init {
+        // El clima es información extra: si falla, la pantalla funciona igual
+        viewModelScope.launch {
+            climaRepository.climaActual().onSuccess { clima ->
+                _estado.update { it.copy(clima = clima) }
+            }
+        }
+    }
 
     fun onTipoChange(tipo: TipoTurno) {
         _estado.update { it.copy(tipo = tipo, errorTipo = null) }
