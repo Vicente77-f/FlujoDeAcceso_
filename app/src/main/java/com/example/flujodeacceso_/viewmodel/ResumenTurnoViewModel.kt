@@ -41,12 +41,11 @@ class ResumenTurnoViewModel(
 
     private var contenidoCsv: String = ""
 
-    init {
-        cargarResumen()
-    }
+    // Ya no hay init: la pantalla llama a cargarResumen() cada vez que aparece
+    // (al entrar y al volver de la corrección), así siempre muestra los datos actuales.
 
     /** Lee el turno, sus conteos y el nombre del responsable desde Room (SELECT). */
-    private fun cargarResumen() {
+    fun cargarResumen() {
         viewModelScope.launch {
             val turno = turnoRepository.obtenerTurno(turnoId)
             if (turno == null) {
@@ -71,7 +70,8 @@ class ResumenTurnoViewModel(
                     porHora = conteos.filter { c -> c.totalIngresos > 0 }.sortedBy { c -> c.hora },
                     vistaPreviaCsv = contenidoCsv,
                     nombreArchivo = nombreArchivoCsv(turno),
-                    exportado = turno.exportado
+                    exportado = turno.exportado,
+                    corregido = turno.corregido
                 )
             }
         }

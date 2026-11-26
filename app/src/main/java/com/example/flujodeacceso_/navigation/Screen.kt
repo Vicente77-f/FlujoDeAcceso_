@@ -14,5 +14,12 @@ sealed class Screen(val route: String) {
         fun crearRuta(turnoId: Long) = "resumen_turno/$turnoId"
     }
 
+
     data object PanelSupervisor : Screen("panel_supervisor")
+
+    data object Correccion : Screen("correccion/{$ARG_TURNO_ID}") {
+        fun crearRuta(turnoId: Long) = "correccion/$turnoId"
+    }
+
 }
+

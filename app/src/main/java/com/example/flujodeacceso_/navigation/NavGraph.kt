@@ -19,7 +19,7 @@ import com.example.flujodeacceso_.ui.screens.iniciarturno.IniciarTurnoScreen
 import com.example.flujodeacceso_.ui.screens.login.LoginScreen
 import com.example.flujodeacceso_.ui.screens.panelsupervisor.PanelSupervisorScreen
 import com.example.flujodeacceso_.ui.screens.resumenturno.ResumenTurnoScreen
-
+import com.example.flujodeacceso_.ui.screens.correccion.CorreccionScreen
 @Composable
 fun AppNavGraph(
     modifier: Modifier = Modifier,
@@ -80,18 +80,24 @@ fun AppNavGraph(
             )
         }
 
-        composable(Screen.ResumenTurno.route, arguments = argumentoTurno) {
+        composable(Screen.ResumenTurno.route, arguments = argumentoTurno) { entrada ->
+            val turnoId = entrada.arguments?.getLong(ARG_TURNO_ID) ?: 0L
             // La misma pantalla sirve para el empleado (al cerrar su turno) y para el supervisor
             val desdePanel = navController.previousBackStackEntry?.destination?.route ==
                     Screen.PanelSupervisor.route
             if (desdePanel) {
                 ResumenTurnoScreen(
                     onSalir = { navController.popBackStack() },
-                    textoSalir = "Volver al panel"
+                    textoSalir = "Volver al panel",
+                    onCorregir = { navController.navigate(Screen.Correccion.crearRuta(turnoId)) }
                 )
             } else {
                 ResumenTurnoScreen(onSalir = irALogin)
             }
+        }
+
+        composable(Screen.Correccion.route, arguments = argumentoTurno) {
+            CorreccionScreen(onVolver = { navController.popBackStack() })
         }
 
         composable(Screen.PanelSupervisor.route) {

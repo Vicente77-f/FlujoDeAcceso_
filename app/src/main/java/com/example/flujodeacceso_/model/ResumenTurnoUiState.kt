@@ -13,6 +13,7 @@ data class ResumenTurnoUiState(
     val vistaPreviaCsv: String = "",
     val nombreArchivo: String = "",
     val exportado: Boolean = false,
+    val corregido: Boolean = false,
     val exportando: Boolean = false,
     val mensaje: String? = null,                          // Éxito o aviso
     val error: String? = null
