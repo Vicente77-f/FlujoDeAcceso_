@@ -58,15 +58,20 @@ import coil.compose.AsyncImage
 import com.example.flujodeacceso_.model.CategoriaConteo
 import com.example.flujodeacceso_.viewmodel.ResumenTurnoViewModel
 import kotlin.math.roundToInt
-
+import androidx.compose.material.icons.filled.Edit
 @Composable
+
 fun ResumenTurnoScreen(
     onSalir: () -> Unit,
     textoSalir: String = "Cerrar sesión",
+    onCorregir: (() -> Unit)? = null,           // Solo el supervisor recibe esta acción
     viewModel: ResumenTurnoViewModel = viewModel()
 ) {
     val estado by viewModel.estado.collectAsStateWithLifecycle()
     val context = LocalContext.current
+
+    // Se vuelve a leer cada vez que la pantalla aparece (por ejemplo, al volver de corregir)
+    LaunchedEffect(Unit) { viewModel.cargarResumen() }
 
     // Recurso nativo 2: el selector de documentos del sistema pregunta DÓNDE guardar el CSV
     val crearArchivo = rememberLauncherForActivityResult(
@@ -169,6 +174,9 @@ fun ResumenTurnoScreen(
             Aviso(texto = "Este turno ya fue exportado", esError = false)
         }
 
+        if (estado.corregido) {
+            Aviso(texto = "Este turno fue corregido por un supervisor", esError = false)
+        }
         // ---------- Botones ----------
         Button(
             onClick = {
@@ -197,6 +205,14 @@ fun ResumenTurnoScreen(
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+        }
+
+        if (onCorregir != null) {
+            OutlinedButton(onClick = onCorregir, modifier = Modifier.fillMaxWidth()) {
+                Icon(Icons.Filled.Edit, contentDescription = null)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Corregir conteos")
+            }
         }
         OutlinedButton(onClick = onSalir, modifier = Modifier.fillMaxWidth()) {
             Text(textoSalir)
