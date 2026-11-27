@@ -19,13 +19,13 @@ Aplicación Android interna para que el personal de una tienda departamental reg
 - Iniciar turno: elegir turno (AM 10:00-15:00 / PM 15:00-20:00), acceso asignado y tomar una **foto del puesto** (sin personas).
 - Contador por categoría (hombre adulto, mujer adulta, menor, sin clasificar) y "solo cruzaron la tienda" (tránsito), con validación, deshacer y números animados. Cada toque se guarda en la base de datos.
 - Resumen del turno con totales, composición, detalle por hora y **exportación a CSV**.
-- - Clima actual de Santiago al iniciar el turno (API externa Open-Meteo).
+- Clima actual de Santiago al iniciar el turno (API externa Open-Meteo).
 
 **Supervisor**
 - Panel con ingresos AM vs PM, composición, tabla por acceso, ingresos vs. transacciones y lista de turnos del día.
 - Abrir y exportar el resumen de cualquier turno.
 - Eliminar un turno con confirmación (se borran también sus conteos).
-- - **Corregir los conteos** de un turno ya guardado. El servidor verifica que sea supervisor y marca el turno como *corregido*.
+- **Corregir los conteos** de un turno ya guardado. El servidor verifica que sea supervisor y marca el turno como *corregido*.
 - El panel se actualiza desde el servidor y muestra los turnos registrados en otros teléfonos.
 
 ## Requisitos técnicos
